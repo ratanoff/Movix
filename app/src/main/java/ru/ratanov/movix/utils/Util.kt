@@ -2,12 +2,14 @@ package ru.ratanov.movix.utils
 
 class Util {
     companion object {
-        val allKeywords = arrayOf("алиса", "найди", "сериал", "фильм", "включи", "смотреть", "посмотреть", "мне")
-        val actionFindKeywords = arrayOf("найди")
-        val actionWatchKeywords = arrayOf("включи", "смотреть", "посмотреть")
+        private val allKeywords = arrayOf("алиса", "найди", "сериал", "фильм", "включи", "смотреть", "посмотреть", "мне", "выбери")
+        private val actionFindKeywords = arrayOf("найди")
+        private val actionWatchKeywords = arrayOf("включи", "смотреть", "посмотреть")
+        private val actionSelectKeywords = arrayOf("выбери")
 
-        val actionFind = "find"
-        val actionWatch = "watch"
+        val ACTION_FIND = "find"
+        val ACTION_WATCH = "watch"
+        val ACTION_SELECT = "select"
 
         fun getCorrectQuery(query: String): String {
             val words = removePunctuation(query).split(" ").toMutableList()
@@ -24,17 +26,23 @@ class Util {
         fun getAction(query: String): String {
             for (wordWatch in actionWatchKeywords) {
                 if (query.contains(wordWatch)) {
-                    return actionWatch
+                    return ACTION_WATCH
                 }
             }
 
             for (wordFind in actionFindKeywords) {
                 if (query.contains(wordFind)) {
-                    return actionFind
+                    return ACTION_FIND
                 }
             }
 
-            return actionFind
+            for (wordSelect in actionSelectKeywords) {
+                if (query.contains(wordSelect)) {
+                    return ACTION_SELECT
+                }
+            }
+
+            return ACTION_FIND
         }
 
         private fun removePunctuation(s: String): String {

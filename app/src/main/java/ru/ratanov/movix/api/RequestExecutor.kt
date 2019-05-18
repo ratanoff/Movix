@@ -17,7 +17,7 @@ object RequestExecutor {
         .build()
 
 
-    fun doSearch(query: String, onSuccess: (List<Film>) -> Unit, onError: () -> Unit) {
+    fun doSearch(query: String, onSuccess: (ArrayList<Film>) -> Unit, onError: () -> Unit) {
         val request = Request.Builder()
             .url("$SEARCH_URL?text=$query&limit=10")
             .addHeader("View", "stb3")
@@ -37,7 +37,7 @@ object RequestExecutor {
                 if (response.isSuccessful) {
                     val searchResult = Gson().fromJson(response.body()?.charStream(), SearchResult::class.java)
 
-                    val films = mutableListOf<Film>()
+                    val films = ArrayList<Film>()
 
                     searchResult.data.showcases.forEach { showcase ->
                         when(showcase.type) {
