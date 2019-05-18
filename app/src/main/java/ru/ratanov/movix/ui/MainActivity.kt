@@ -13,21 +13,26 @@ import ru.ratanov.movix.list.FilmAdapter
 import ru.ratanov.movix.list.FilmClickListener
 import ru.ratanov.movix.model.Film
 import ru.ratanov.movix.utils.Util
-import ru.yandex.speechkit.Language
-import ru.yandex.speechkit.OnlineModel
+import ru.yandex.speechkit.*
 import ru.yandex.speechkit.gui.RecognizerActivity
 
-class MainActivity : AppCompatActivity(), FilmClickListener {
+
+class MainActivity : AppCompatActivity(), FilmClickListener, VocalizerListener {
+
 
     companion object {
         private val REQUEST_CODE = 31
     }
+
+    private var vocalizer: Vocalizer? = null
 
     private var films = ArrayList<Film>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        greet()
 
         fab.setOnClickListener {
             val intent = Intent(this, RecognizerActivity::class.java)
@@ -38,6 +43,13 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        vocalizer?.cancel()
+        vocalizer?.destroy()
+        vocalizer = null
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE) {
@@ -46,10 +58,11 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
                 val correctResult = Util.getCorrectQuery(result)
                 val action = Util.getAction(result)
 
-                when(action) {
+                when (action) {
                     Util.ACTION_FIND -> doSearch(correctResult)
                     Util.ACTION_SELECT -> doSelect(correctResult)
-                    Util.ACTION_WATCH -> {}
+                    Util.ACTION_WATCH -> {
+                    }
                 }
 
 
@@ -62,10 +75,13 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
 
     private fun doSearch(query: String) {
         RequestExecutor.doSearch(query,
-            onSuccess = {result ->
+            onSuccess = { result ->
                 runOnUiThread {
                     if (result.isEmpty()) {
-                        Toast.makeText(this, "Ничего не найдено", Toast.LENGTH_SHORT).show()
+                        vocalizer?.synthesize(
+                            "Ничего не найдено",
+                            Vocalizer.TextSynthesizingMode.INTERRUPT
+                        )
                         return@runOnUiThread
                     }
 
@@ -82,9 +98,10 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
 
             },
             onError = {
-                runOnUiThread {
-                    Toast.makeText(this, "Ошиибка. Попрбуйте еще", Toast.LENGTH_SHORT).show()
-                }
+                vocalizer?.synthesize(
+                    "Произошла ошибка. Попробуйте еще.",
+                    Vocalizer.TextSynthesizingMode.INTERRUPT
+                )
             }
         )
     }
@@ -96,8 +113,6 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
     }
 
 
-
-
     override fun onFilmSelected(film: Film) {
         Toast.makeText(this, film.title, Toast.LENGTH_SHORT).show()
 
@@ -106,4 +121,36 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
         startActivity(intent)
     }
 
+    private fun greet() {
+        vocalizer = OnlineVocalizer.Builder(Language.RUSSIAN, this@MainActivity)
+            .setVoice(Voice.ALYSS)
+            .setAutoPlay(true)
+            .build()
+
+        vocalizer?.synthesize(
+            getString(R.string.greeting),
+            Vocalizer.TextSynthesizingMode.INTERRUPT
+        )
+    }
+
+
+    override fun onPlayingBegin(p0: Vocalizer) {
+
+    }
+
+    override fun onVocalizerError(p0: Vocalizer, p1: Error) {
+
+    }
+
+    override fun onSynthesisDone(p0: Vocalizer) {
+
+    }
+
+    override fun onPartialSynthesis(p0: Vocalizer, p1: Synthesis) {
+
+    }
+
+    override fun onPlayingDone(p0: Vocalizer) {
+
+    }
 }

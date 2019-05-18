@@ -63,6 +63,8 @@ object RequestExecutor {
                     }
 
                     onSuccess.invoke(films)
+                } else {
+                    onError.invoke()
                 }
             }
         })
