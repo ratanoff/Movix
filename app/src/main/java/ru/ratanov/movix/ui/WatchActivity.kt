@@ -20,7 +20,7 @@ class WatchActivity : AppCompatActivity() {
 
         val exoPlayer = ExoPlayerFactory.newSimpleInstance(DefaultRenderersFactory(this), DefaultTrackSelector(), DefaultLoadControl())
         val userAgent = "exoplayer-codelab"
-        val urlSource = "" // todo: get from activity
+        val urlSource = intent.getStringExtra("urlSource")
         val mediaSource = HlsMediaSource.Factory(DefaultHttpDataSourceFactory(userAgent)).createMediaSource(Uri.parse(urlSource))
         exoPlayer.prepare(mediaSource)
         exoPlayer.playWhenReady = true
