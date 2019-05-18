@@ -16,6 +16,7 @@ class DetailActivity : AppCompatActivity() {
         val film = intent.getParcelableExtra<Film>("film")
 
         film_title.text = film.title
+        film_desc.text = film.description
 
         Picasso.get()
             .load(film.posterUrl)

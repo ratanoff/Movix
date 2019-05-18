@@ -22,7 +22,8 @@ data class Showcase(
 data class Item(
     val id: Int,
     val title: String,
-    val resources: List<Resources>
+    val resources: List<Resources>,
+    val description: String
 )
 
 data class Resources(

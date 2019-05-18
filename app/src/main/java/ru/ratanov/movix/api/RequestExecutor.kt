@@ -40,7 +40,7 @@ object RequestExecutor {
                     val films = ArrayList<Film>()
 
                     searchResult.data.showcases.forEach { showcase ->
-                        when(showcase.type) {
+                        when (showcase.type) {
                             "movies", "serials" -> {
                                 Log.d("Result", "${showcase.title} = ${showcase.total}")
 
@@ -50,11 +50,13 @@ object RequestExecutor {
                                     val posterId = it.resources.find { it.type == "poster_blueprint" }?.id
                                     val streamId = it.resources.find { it.type == "hls" }?.id
 
-                                    films.add(Film(
-                                        id = it.id, title = it.title,
-                                        posterUrl = "http://er-cdn.ertelecom.ru/content/public/r$posterId",
-                                        streamId = "https://discovery-stb3.ertelecom.ru/resource/get_url/${it.id}/$streamId"
-                                    ))
+                                    films.add(
+                                        Film(
+                                            id = it.id, title = it.title, description = it.description,
+                                            posterUrl = "http://er-cdn.ertelecom.ru/content/public/r$posterId",
+                                            streamId = "https://discovery-stb3.ertelecom.ru/resource/get_url/${it.id}/$streamId"
+                                        )
+                                    )
                                 }
                             }
                         }
