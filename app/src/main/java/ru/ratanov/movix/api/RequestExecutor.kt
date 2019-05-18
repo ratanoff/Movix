@@ -6,6 +6,7 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import ru.ratanov.movix.model.Film
 import ru.ratanov.movix.model.SearchResult
+import ru.ratanov.movix.model.Video
 import java.io.IOException
 
 object RequestExecutor {
@@ -16,6 +17,30 @@ object RequestExecutor {
         .addNetworkInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
 
+
+    fun getVideoFile(url: String, onSuccess: (videoUrl: String) -> Unit, onError: () -> Unit) {
+        val request = Request.Builder()
+            .url(url)
+            .addHeader("View", "stb3")
+            .addHeader("X-Auth-Token", TOKEN)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d(TAG, "Search error")
+                onError.invoke()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                Log.d(TAG, "Get Video success")
+
+                if (response.isSuccessful) {
+                    val searchResult = Gson().fromJson(response.body()?.charStream(), Video::class.java)
+                    onSuccess.invoke(searchResult.url)
+                }
+            }
+        })
+    }
 
     fun doSearch(query: String, onSuccess: (ArrayList<Film>) -> Unit, onError: () -> Unit) {
         val request = Request.Builder()
