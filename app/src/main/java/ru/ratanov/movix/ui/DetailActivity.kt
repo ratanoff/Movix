@@ -6,11 +6,15 @@ import android.os.Bundle
 import android.widget.Toast
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
+import ru.ratanov.movix.App
 import ru.ratanov.movix.R
 import ru.ratanov.movix.api.RequestExecutor
 import ru.ratanov.movix.model.Film
+import ru.yandex.speechkit.*
 
 class DetailActivity : AppCompatActivity() {
+
+    private var vocalizer: Vocalizer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,13 +32,16 @@ class DetailActivity : AppCompatActivity() {
         film_btn_watch.setOnClickListener {
             RequestExecutor.getVideoFile(film.streamId,
                 onSuccess = { videoUrl ->
+                    if (videoUrl == null) {
+                        App.speakMessage(R.string.access_error_message)
+                        return@getVideoFile
+                    }
+
                     val intent = Intent(this, WatchActivity::class.java)
                     intent.putExtra("urlSource", videoUrl)
                     startActivity(intent)
                 }, onError = {
-                    runOnUiThread {
-                        Toast.makeText(this, "Ошиибка. Попрбуйте еще", Toast.LENGTH_SHORT).show()
-                    }
+                    App.speakMessage(R.string.try_later_message)
                 })
         }
     }

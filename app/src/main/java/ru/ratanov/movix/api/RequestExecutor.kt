@@ -18,7 +18,7 @@ object RequestExecutor {
         .build()
 
 
-    fun getVideoFile(url: String, onSuccess: (videoUrl: String) -> Unit, onError: () -> Unit) {
+    fun getVideoFile(url: String, onSuccess: (videoUrl: String?) -> Unit, onError: () -> Unit) {
         val request = Request.Builder()
             .url(url)
             .addHeader("View", "stb3")
@@ -37,6 +37,8 @@ object RequestExecutor {
                 if (response.isSuccessful) {
                     val searchResult = Gson().fromJson(response.body()?.charStream(), Video::class.java)
                     onSuccess.invoke(searchResult.url)
+                } else {
+                    onError.invoke()
                 }
             }
         })

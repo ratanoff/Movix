@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import ru.ratanov.movix.App
 import ru.ratanov.movix.R
 import ru.ratanov.movix.api.RequestExecutor
 import ru.ratanov.movix.list.FilmAdapter
@@ -17,14 +18,12 @@ import ru.yandex.speechkit.*
 import ru.yandex.speechkit.gui.RecognizerActivity
 
 
-class MainActivity : AppCompatActivity(), FilmClickListener, VocalizerListener {
+class MainActivity : AppCompatActivity(), FilmClickListener {
 
 
     companion object {
         private val REQUEST_CODE = 31
     }
-
-    private var vocalizer: Vocalizer? = null
 
     private var films = ArrayList<Film>()
 
@@ -43,12 +42,6 @@ class MainActivity : AppCompatActivity(), FilmClickListener, VocalizerListener {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        vocalizer?.cancel()
-        vocalizer?.destroy()
-        vocalizer = null
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -68,7 +61,7 @@ class MainActivity : AppCompatActivity(), FilmClickListener, VocalizerListener {
 
             } else if (resultCode == RecognizerActivity.RESULT_ERROR) {
                 val error = data?.getSerializableExtra(RecognizerActivity.EXTRA_ERROR).toString()
-//                updateTextResult(error)
+                App.speakMessage(error)
             }
         }
     }
@@ -76,32 +69,24 @@ class MainActivity : AppCompatActivity(), FilmClickListener, VocalizerListener {
     private fun doSearch(query: String) {
         RequestExecutor.doSearch(query,
             onSuccess = { result ->
-                runOnUiThread {
-                    if (result.isEmpty()) {
-                        vocalizer?.synthesize(
-                            "Ничего не найдено",
-                            Vocalizer.TextSynthesizingMode.INTERRUPT
-                        )
-                        return@runOnUiThread
-                    }
+                if (result.isEmpty()) {
+                    App.speakMessage("Ничего не найдено")
+                } else {
+                    runOnUiThread {
+                        films.clear()
+                        films = result
 
-                    films.clear()
-                    films = result
-
-                    with(recycler_view) {
-                        layoutManager = LinearLayoutManager(this@MainActivity)
-                        addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-                        setHasFixedSize(true)
-                        adapter = FilmAdapter(films, this@MainActivity)
+                        with(recycler_view) {
+                            layoutManager = LinearLayoutManager(this@MainActivity)
+                            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+                            setHasFixedSize(true)
+                            adapter = FilmAdapter(films, this@MainActivity)
+                        }
                     }
                 }
-
             },
             onError = {
-                vocalizer?.synthesize(
-                    "Произошла ошибка. Попробуйте еще.",
-                    Vocalizer.TextSynthesizingMode.INTERRUPT
-                )
+                App.speakMessage(R.string.try_later_message)
             }
         )
     }
@@ -122,35 +107,7 @@ class MainActivity : AppCompatActivity(), FilmClickListener, VocalizerListener {
     }
 
     private fun greet() {
-        vocalizer = OnlineVocalizer.Builder(Language.RUSSIAN, this@MainActivity)
-            .setVoice(Voice.ALYSS)
-            .setAutoPlay(true)
-            .build()
-
-        vocalizer?.synthesize(
-            getString(R.string.greeting),
-            Vocalizer.TextSynthesizingMode.INTERRUPT
-        )
+        App.speakMessage(R.string.greeting)
     }
 
-
-    override fun onPlayingBegin(p0: Vocalizer) {
-
-    }
-
-    override fun onVocalizerError(p0: Vocalizer, p1: Error) {
-
-    }
-
-    override fun onSynthesisDone(p0: Vocalizer) {
-
-    }
-
-    override fun onPartialSynthesis(p0: Vocalizer, p1: Synthesis) {
-
-    }
-
-    override fun onPlayingDone(p0: Vocalizer) {
-
-    }
 }

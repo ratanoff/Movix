@@ -32,7 +32,7 @@ data class Resources(
 )
 
 data class Video(
-    val url: String,
+    val url: String?,
     val closeTime: Long,
     val drmVersion: Int,
     val result: Int
