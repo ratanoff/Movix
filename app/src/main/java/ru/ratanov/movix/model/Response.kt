@@ -30,3 +30,10 @@ data class Resources(
     val id: Int,
     val type: String
 )
+
+data class Video(
+    val url: String,
+    val closeTime: Long,
+    val drmVersion: Int,
+    val result: Int
+)
