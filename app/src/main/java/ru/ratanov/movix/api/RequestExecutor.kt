@@ -17,6 +17,10 @@ object RequestExecutor {
         .build()
 
 
+    fun getVideoFile() {
+
+    }
+
     fun doSearch(query: String, onSuccess: (ArrayList<Film>) -> Unit, onError: () -> Unit) {
         val request = Request.Builder()
             .url("$SEARCH_URL?text=$query&limit=10")
