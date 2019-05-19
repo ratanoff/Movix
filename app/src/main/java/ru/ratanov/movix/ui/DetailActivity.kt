@@ -32,7 +32,7 @@ class DetailActivity : AppCompatActivity() {
         film_title.text = film.title
         film_desc.text = film.description
 
-//        App.speakMessage(film.description)
+        App.speakMessage(film.description)
 
         Picasso.get()
             .load(film.posterUrl)
@@ -72,8 +72,7 @@ class DetailActivity : AppCompatActivity() {
                         }
                         startActivity(intent)
                     }
-                    Util.ACTION_WATCH -> {
-                    }
+                    Util.ACTION_WATCH -> playVideo()
                 }
 
 
