@@ -15,7 +15,9 @@
         <activity android:name=".ui.WatchActivity">
         </activity>
         <activity android:name=".ui.DetailActivity"/>
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.MainActivity"
+            android:launchMode="singleTask"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
