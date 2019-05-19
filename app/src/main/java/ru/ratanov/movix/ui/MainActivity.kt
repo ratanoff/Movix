@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
             return
         }
 
-        greet()
+        App.speakMessage(R.string.greeting)
     }
 
 
@@ -103,15 +103,11 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
 
 
     override fun onFilmSelected(film: Film) {
-        Toast.makeText(this, film.title, Toast.LENGTH_SHORT).show()
+        App.shutUp()
 
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra("film", film)
         startActivity(intent)
-    }
-
-    private fun greet() {
-        App.speakMessage(R.string.greeting)
     }
 
 }

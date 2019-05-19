@@ -10,5 +10,6 @@ data class Film(
     val title: String,
     val description: String,
     val posterUrl: String?,
-    val streamId: String
+    val streamId: String,
+    val offer: Int
 ) : Parcelable

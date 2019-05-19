@@ -23,7 +23,8 @@ data class Item(
     val id: Int,
     val title: String,
     val resources: List<Resources>,
-    val description: String
+    val description: String,
+    val offer: Offer
 )
 
 data class Resources(
@@ -31,9 +32,17 @@ data class Resources(
     val type: String
 )
 
+data class Offer(
+    val id: Int
+)
+
 data class Video(
     val url: String?,
     val closeTime: Long,
     val drmVersion: Int,
+    val result: Int
+)
+
+data class PurchaseResponse(
     val result: Int
 )

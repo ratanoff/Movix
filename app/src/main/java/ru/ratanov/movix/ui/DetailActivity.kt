@@ -3,6 +3,8 @@ package ru.ratanov.movix.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.widget.Toast
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -17,6 +19,8 @@ import ru.yandex.speechkit.gui.RecognizerActivity
 
 class DetailActivity : AppCompatActivity() {
 
+    private val PURCHASE_REQUEST_CODE = 32
+
     private lateinit var film: Film
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +32,7 @@ class DetailActivity : AppCompatActivity() {
         film_title.text = film.title
         film_desc.text = film.description
 
-        App.speakMessage(film.description)
+//        App.speakMessage(film.description)
 
         Picasso.get()
             .load(film.posterUrl)
@@ -68,7 +72,8 @@ class DetailActivity : AppCompatActivity() {
                         }
                         startActivity(intent)
                     }
-                    Util.ACTION_WATCH -> {}
+                    Util.ACTION_WATCH -> {
+                    }
                 }
 
 
@@ -76,14 +81,31 @@ class DetailActivity : AppCompatActivity() {
                 val error = data?.getSerializableExtra(RecognizerActivity.EXTRA_ERROR).toString()
                 App.speakMessage(error)
             }
+        } else if (requestCode == PURCHASE_REQUEST_CODE) {
+            if (resultCode == RecognizerActivity.RESULT_OK && data != null) {
+                val result = data.getStringExtra(RecognizerActivity.EXTRA_RESULT)
+                val answer = Util.removePunctuation(result)
+                if (answer.contains("да", true)) {
+                    RequestExecutor.doPurchase(film.id, film.offer,
+                        onSuccess = {
+                            playVideo()
+                            Log.d("Purchase", "Success")
+                        },
+                        onError = {
+                            Log.d("Purchase", "Success")
+                        }
+                    )
+                }
+            }
         }
+
     }
 
     private fun playVideo() {
         RequestExecutor.getVideoFile(film.streamId,
             onSuccess = { videoUrl ->
                 if (videoUrl == null) {
-                    App.speakMessage(R.string.access_error_message)
+                    requestPurchaseRequest()
                     return@getVideoFile
                 }
 
@@ -93,6 +115,20 @@ class DetailActivity : AppCompatActivity() {
             }, onError = {
                 App.speakMessage(R.string.try_later_message)
             })
+    }
+
+    private fun requestPurchaseRequest() {
+        App.speakMessage(R.string.access_error_message)
+
+        runOnUiThread {
+            Handler().postDelayed({
+                val intent = Intent(this, RecognizerActivity::class.java)
+                intent.putExtra(RecognizerActivity.EXTRA_MODEL, OnlineModel.QUERIES.name)
+                intent.putExtra(RecognizerActivity.EXTRA_LANGUAGE, Language.RUSSIAN.value)
+
+                startActivityForResult(intent, PURCHASE_REQUEST_CODE)
+            }, 5000)
+        }
     }
 
 }
