@@ -13,6 +13,7 @@ class App : Application(), VocalizerListener {
         private var instance: Application? = null
         fun instance() = instance!!
         var vocalizer: Vocalizer? = null
+        const val REQUEST_CODE = 31
 
         fun speakMessage(messageResId: Int) = speakMessage(instance?.getString(messageResId))
 

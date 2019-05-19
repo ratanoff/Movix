@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.ratanov.movix.App
+import ru.ratanov.movix.App.Companion.REQUEST_CODE
 import ru.ratanov.movix.R
 import ru.ratanov.movix.api.RequestExecutor
 import ru.ratanov.movix.list.FilmAdapter
@@ -19,8 +20,6 @@ import ru.yandex.speechkit.gui.RecognizerActivity
 
 
 class MainActivity : AppCompatActivity(), FilmClickListener {
-
-    private val REQUEST_CODE = 31
 
     private var films = ArrayList<Film>()
 

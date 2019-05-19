@@ -3,7 +3,7 @@ package ru.ratanov.movix.utils
 class Util {
     companion object {
         private val allKeywords =
-            arrayOf("алиса", "найди", "сериал", "фильм", "включи", "смотреть", "посмотреть", "мне", "выбери", "плей")
+            arrayOf("алиса", "найди", "сериал", "фильм", "включи", "смотреть", "посмотреть", "мне", "выбери")
         private val actionFindKeywords = arrayOf("найди")
         private val actionWatchKeywords = arrayOf("включи", "смотреть", "посмотреть")
         private val actionSelectKeywords = arrayOf("выбери")
