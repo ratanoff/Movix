@@ -55,10 +55,8 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
                 val action = Util.getAction(result)
 
                 when (action) {
-                    Util.ACTION_FIND -> doSearch(correctResult)
+                    Util.ACTION_FIND, Util.ACTION_WATCH -> doSearch(correctResult)
                     Util.ACTION_SELECT -> doSelect(correctResult)
-                    Util.ACTION_WATCH -> {
-                    }
                 }
 
 

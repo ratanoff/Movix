@@ -68,7 +68,7 @@ class DetailActivity : AppCompatActivity() {
                         }
                         startActivity(intent)
                     }
-                    Util.ACTION_WATCH -> {}
+                    Util.ACTION_WATCH -> playVideo()
                 }
 
 
