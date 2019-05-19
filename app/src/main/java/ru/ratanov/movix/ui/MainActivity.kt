@@ -2,6 +2,7 @@ package ru.ratanov.movix.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -79,6 +80,7 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
                         films = result
 
                         with(recycler_view) {
+                            click_hint.visibility = View.INVISIBLE
                             layoutManager = LinearLayoutManager(this@MainActivity)
                             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
                             setHasFixedSize(true)
@@ -112,4 +114,8 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
         App.speakMessage(R.string.greeting)
     }
 
+    override fun onDestroy() {
+        click_hint.visibility = View.VISIBLE
+        super.onDestroy()
+    }
 }
