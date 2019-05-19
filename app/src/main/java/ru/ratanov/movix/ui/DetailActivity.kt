@@ -1,5 +1,6 @@
 package ru.ratanov.movix.ui
 
+import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,10 +24,13 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var film: Film
 
+    private lateinit var progressDialog: ProgressDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
+        progressDialog = ProgressDialog(this).apply { setMessage("Покупка фильма") }
         film = intent.getParcelableExtra("film")
 
         film_title.text = film.title
@@ -85,12 +89,16 @@ class DetailActivity : AppCompatActivity() {
                 val result = data.getStringExtra(RecognizerActivity.EXTRA_RESULT)
                 val answer = Util.removePunctuation(result)
                 if (answer.contains("да", true)) {
+                    progressDialog.show()
                     RequestExecutor.doPurchase(film.id, film.offer,
                         onSuccess = {
+                            progressDialog.dismiss()
                             playVideo()
                             Log.d("Purchase", "Success")
                         },
                         onError = {
+                            progressDialog.dismiss()
+                            App.speakMessage(R.string.try_later_message)
                             Log.d("Purchase", "Success")
                         }
                     )
