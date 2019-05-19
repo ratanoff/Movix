@@ -3,11 +3,15 @@ package ru.ratanov.movix.utils
 class Util {
     companion object {
         private val allKeywords =
-            arrayOf("алиса", "найди", "сериал", "фильм", "включи", "смотреть", "посмотреть", "мне", "выбери", "выбрать")
+            arrayOf("алиса", "найди", "сериал", "фильм", "фильмы", "включи", "смотреть", "посмотреть", "мне", "с", "выбери", "выбрать")
         private val actionFindKeywords = arrayOf("найди")
         private val actionWatchKeywords = arrayOf("включи", "смотреть", "посмотреть")
         private val actionSelectKeywords = arrayOf("выбери", "выбрать")
         private val videoKeyWords = arrayOf("плей", "стоп", "пауза")
+        private val angelinaKeywords = arrayOf("анджелиной")
+        private val pittKeywords = arrayOf("брэдом", "бредом")
+        private const val angelinaCorrect = "анджелина"
+        private const val pittCorrect = "брэд"
 
         val ACTION_FIND = "find"
         val ACTION_WATCH = "watch"
@@ -18,7 +22,12 @@ class Util {
             val words = removePunctuation(query).split(" ").toMutableList()
             var correctQuery = ""
             for (word in words) {
-                if (word.toLowerCase() !in allKeywords) {
+                // падежи - временное решение
+                if (word.toLowerCase() in angelinaKeywords) {
+                    correctQuery += " $angelinaCorrect"
+                } else if (word.toLowerCase() in pittKeywords) {
+                    correctQuery += " $pittCorrect"
+                } else if (word.toLowerCase() !in allKeywords) {
                     correctQuery += " $word"
                 }
             }
