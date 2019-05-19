@@ -49,7 +49,7 @@ class WatchActivity : AppCompatActivity() {
             DefaultTrackSelector(),
             DefaultLoadControl()
         )
-        exoPlayer.prepare(mediaSource)
+        exoPlayer.prepare(mediaSource, false, false)
         exoPlayer.playWhenReady = true
         player_view.player = exoPlayer
     }
@@ -73,11 +73,11 @@ class WatchActivity : AppCompatActivity() {
                         when (correctResult) {
                             "пауза" -> {
                                 if (exoPlayer.playWhenReady && exoPlayer.playbackState == Player.STATE_READY) {
-                                    exoPlayer.release()
+                                    exoPlayer.stop(false)
                                 }
                             }
                             "плей" -> {
-                                exoPlayer.prepare(mediaSource)
+                                exoPlayer.prepare(mediaSource, false, false)
                                 exoPlayer.playWhenReady = true
                             }
                             "стоп" -> startActivity(Intent(this, MainActivity::class.java))
