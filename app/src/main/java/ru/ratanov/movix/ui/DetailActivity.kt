@@ -34,6 +34,7 @@ class DetailActivity : AppCompatActivity() {
             .into(film_poster)
 
         fab.setOnClickListener {
+            App.shutUp()
             val intent = Intent(this, RecognizerActivity::class.java)
             intent.putExtra(RecognizerActivity.EXTRA_MODEL, OnlineModel.QUERIES.name)
             intent.putExtra(RecognizerActivity.EXTRA_LANGUAGE, Language.RUSSIAN.value)

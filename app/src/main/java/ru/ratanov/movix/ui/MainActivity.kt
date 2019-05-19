@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
         setContentView(R.layout.activity_main)
 
         fab.setOnClickListener {
+            App.shutUp()
             val intent = Intent(this, RecognizerActivity::class.java)
             intent.putExtra(RecognizerActivity.EXTRA_MODEL, OnlineModel.QUERIES.name)
             intent.putExtra(RecognizerActivity.EXTRA_LANGUAGE, Language.RUSSIAN.value)
@@ -74,6 +75,7 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
                 if (result.isEmpty()) {
                     App.speakMessage("Ничего не найдено")
                 } else {
+                    App.speakMessage(String.format(getString(R.string.found_count_message), result.size))
                     runOnUiThread {
                         films.clear()
                         films = result

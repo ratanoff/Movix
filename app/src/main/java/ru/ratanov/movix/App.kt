@@ -20,6 +20,8 @@ class App : Application(), VocalizerListener {
             message ?: return
             vocalizer?.synthesize(message, Vocalizer.TextSynthesizingMode.INTERRUPT)
         }
+
+        fun shutUp() = vocalizer?.cancel()
     }
 
     override fun onCreate() {

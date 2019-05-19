@@ -3,4 +3,5 @@
     <string name="greeting">Приветствую вас. Нажмите кнопку, и произнесите запрос.</string>
     <string name="access_error_message">"Похоже, что вы не оплатили этот фильм"</string>
     <string name="try_later_message">Ошиибка. Попрбуйте еще</string>
+    <string name="found_count_message">По вашему запросу найдено %s результатов</string>
 </resources>
