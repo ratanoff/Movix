@@ -3,15 +3,16 @@ package ru.ratanov.movix.utils
 class Util {
     companion object {
         private val allKeywords =
-            arrayOf("алиса", "найди", "сериал", "фильм", "включи", "смотреть", "посмотреть", "мне", "выбери", "выбрать", "плей")
+            arrayOf("алиса", "найди", "сериал", "фильм", "включи", "смотреть", "посмотреть", "мне", "выбери", "выбрать")
         private val actionFindKeywords = arrayOf("найди")
         private val actionWatchKeywords = arrayOf("включи", "смотреть", "посмотреть")
         private val actionSelectKeywords = arrayOf("выбери", "выбрать")
-        private val videoKeyWords = arrayOf("плей")
+        private val videoKeyWords = arrayOf("плей", "стоп", "пауза")
 
         val ACTION_FIND = "find"
         val ACTION_WATCH = "watch"
         val ACTION_SELECT = "select"
+        val ACTION_VIDEO = "video"
 
         fun getCorrectQuery(query: String): String {
             val words = removePunctuation(query).split(" ").toMutableList()
@@ -41,6 +42,12 @@ class Util {
             for (wordSelect in actionSelectKeywords) {
                 if (query.contains(wordSelect)) {
                     return ACTION_SELECT
+                }
+            }
+
+            for (wordVideo in videoKeyWords) {
+                if (query.contains(wordVideo)) {
+                    return ACTION_VIDEO
                 }
             }
 

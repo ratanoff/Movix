@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
 import ru.ratanov.movix.App
+import ru.ratanov.movix.App.Companion.REQUEST_CODE
 import ru.ratanov.movix.R
 import ru.ratanov.movix.api.RequestExecutor
 import ru.ratanov.movix.model.Film
@@ -15,8 +16,6 @@ import ru.yandex.speechkit.*
 import ru.yandex.speechkit.gui.RecognizerActivity
 
 class DetailActivity : AppCompatActivity() {
-
-    private val REQUEST_CODE = 31
 
     private lateinit var film: Film
 
