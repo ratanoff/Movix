@@ -3,10 +3,10 @@ package ru.ratanov.movix.utils
 class Util {
     companion object {
         private val allKeywords =
-            arrayOf("алиса", "найди", "сериал", "фильм", "включи", "смотреть", "посмотреть", "мне", "выбери", "плей")
+            arrayOf("алиса", "найди", "сериал", "фильм", "включи", "смотреть", "посмотреть", "мне", "выбери", "выбрать", "плей")
         private val actionFindKeywords = arrayOf("найди")
         private val actionWatchKeywords = arrayOf("включи", "смотреть", "посмотреть")
-        private val actionSelectKeywords = arrayOf("выбери")
+        private val actionSelectKeywords = arrayOf("выбери", "выбрать")
         private val videoKeyWords = arrayOf("плей")
 
         val ACTION_FIND = "find"
@@ -52,7 +52,7 @@ class Util {
             for (c in s.toCharArray())
                 if (Character.isLetterOrDigit(c) || Character.isWhitespace(c))
                     builder.append(if (Character.isLowerCase(c)) c else Character.toLowerCase(c))
-            return builder.toString()
+            return builder.toString().replace("\\s+".toRegex(), " ")
         }
     }
 }

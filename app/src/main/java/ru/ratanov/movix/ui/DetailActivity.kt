@@ -29,6 +29,8 @@ class DetailActivity : AppCompatActivity() {
         film_title.text = film.title
         film_desc.text = film.description
 
+        App.speakMessage(film.description)
+
         Picasso.get()
             .load(film.posterUrl)
             .into(film_poster)
@@ -45,6 +47,11 @@ class DetailActivity : AppCompatActivity() {
         film_btn_watch.setOnClickListener {
             playVideo()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        App.shutUp()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

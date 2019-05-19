@@ -14,7 +14,8 @@ import ru.ratanov.movix.list.FilmAdapter
 import ru.ratanov.movix.list.FilmClickListener
 import ru.ratanov.movix.model.Film
 import ru.ratanov.movix.utils.Util
-import ru.yandex.speechkit.*
+import ru.yandex.speechkit.Language
+import ru.yandex.speechkit.OnlineModel
 import ru.yandex.speechkit.gui.RecognizerActivity
 
 
