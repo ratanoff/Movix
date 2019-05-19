@@ -20,18 +20,13 @@ import ru.yandex.speechkit.gui.RecognizerActivity
 
 class MainActivity : AppCompatActivity(), FilmClickListener {
 
-
-    companion object {
-        private val REQUEST_CODE = 31
-    }
+    private val REQUEST_CODE = 31
 
     private var films = ArrayList<Film>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        greet()
 
         fab.setOnClickListener {
             val intent = Intent(this, RecognizerActivity::class.java)
@@ -40,6 +35,13 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
 
             startActivityForResult(intent, REQUEST_CODE)
         }
+
+        intent.getStringExtra("query")?.let {
+            doSearch(it)
+            return
+        }
+
+        greet()
     }
 
 
@@ -92,9 +94,9 @@ class MainActivity : AppCompatActivity(), FilmClickListener {
     }
 
     private fun doSelect(query: String) {
-        val selected = films.find { it.title.contains(query, true) }
+        val trimmedQuery = Util.removePunctuation(query)
+        val selected = films.find { it.title.contains(trimmedQuery, true) }
         selected?.let { onFilmSelected(it) }
-
     }
 
 

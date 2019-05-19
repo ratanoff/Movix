@@ -2,10 +2,12 @@ package ru.ratanov.movix.utils
 
 class Util {
     companion object {
-        private val allKeywords = arrayOf("алиса", "найди", "сериал", "фильм", "включи", "смотреть", "посмотреть", "мне", "выбери")
+        private val allKeywords =
+            arrayOf("алиса", "найди", "сериал", "фильм", "включи", "смотреть", "посмотреть", "мне", "выбери", "плей")
         private val actionFindKeywords = arrayOf("найди")
         private val actionWatchKeywords = arrayOf("включи", "смотреть", "посмотреть")
         private val actionSelectKeywords = arrayOf("выбери")
+        private val videoKeyWords = arrayOf("плей")
 
         val ACTION_FIND = "find"
         val ACTION_WATCH = "watch"
@@ -45,7 +47,7 @@ class Util {
             return ACTION_FIND
         }
 
-        private fun removePunctuation(s: String): String {
+        fun removePunctuation(s: String): String {
             val builder = StringBuilder()
             for (c in s.toCharArray())
                 if (Character.isLetterOrDigit(c) || Character.isWhitespace(c))
