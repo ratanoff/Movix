@@ -21,7 +21,7 @@ class WatchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_watch)
 
-        val exoPlayer = ExoPlayerFactory.newSimpleInstance(DefaultRenderersFactory(this), DefaultTrackSelector(), DefaultLoadControl())
+        exoPlayer = ExoPlayerFactory.newSimpleInstance(DefaultRenderersFactory(this), DefaultTrackSelector(), DefaultLoadControl())
         val userAgent = "exoplayer-codelab"
         val urlSource = intent.getStringExtra("urlSource")
         val mediaSource = HlsMediaSource.Factory(DefaultHttpDataSourceFactory(userAgent)).createMediaSource(Uri.parse(urlSource))
